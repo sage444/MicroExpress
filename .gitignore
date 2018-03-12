@@ -6,4 +6,5 @@
 xcuserdata
 *.xcuserdata
 *.build
+*.xcodeproj
 
