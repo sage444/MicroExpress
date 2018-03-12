@@ -16,21 +16,36 @@ open class Router {
               response       : ServerResponse,
               next upperNext : @escaping Next)
   {
-    let stack = self.middleware
-    guard !stack.isEmpty else { return upperNext() }
-    
-    var next : Next? = { ( args : Any... ) in }
-    var i = stack.startIndex
-    next = { (args : Any...) in
-      // grab next item from matching middleware array
-      let middleware = stack[i]
-      i = stack.index(after: i)
+    final class State {
+      var stack    : ArraySlice<Middleware>
+      let request  : IncomingMessage
+      let response : ServerResponse
+      var next     : Next?
       
-      let isLast = i == stack.endIndex
-      middleware(request, response, isLast ? upperNext : next!)
+      init(_ stack    : ArraySlice<Middleware>,
+           _ request  : IncomingMessage,
+           _ response : ServerResponse,
+           _ next     : @escaping Next)
+      {
+        self.stack    = stack
+        self.request  = request
+        self.response = response
+        self.next     = next
+      }
+      
+      func step(_ args : Any...) {
+        if let middleware = stack.popFirst() {
+          middleware(request, response, self.step)
+        }
+        else {
+          next?(); next = nil
+        }
+      }
     }
     
-    next!()
+    let state = State(middleware[middleware.indices],
+                      request, response, upperNext)
+    state.step()
   }
 }
 
