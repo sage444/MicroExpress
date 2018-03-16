@@ -20,7 +20,7 @@ open class Express : Router {
       .serverChannelOption(reuseAddrOpt, value: 1)
       
       .childChannelInitializer { channel in
-        channel.pipeline.addHTTPServerHandlers().then {
+        channel.pipeline.configureHTTPServerPipeline().then {
           channel.pipeline.add(handler:
             HTTPHandler(router: self))
         }
