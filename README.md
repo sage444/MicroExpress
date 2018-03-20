@@ -43,6 +43,7 @@ offical Swift
   - Part 1 [Using the Swift Server API 0.1.0](http://www.alwaysrightinstitute.com/http-010/)
   - Part 2 [µExpress](http://www.alwaysrightinstitute.com/microexpress/)
   - Part 3 [µExpress/NIO](http://www.alwaysrightinstitute.com/microexpress-nio)
+  - Part 4 [µExpress/NIO Templates](http://www.alwaysrightinstitute.com/microexpress-nio-templates)
 
 Please checkout [Part 3](http://www.alwaysrightinstitute.com/microexpress-nio)
 of our blog series to learn what this is about.

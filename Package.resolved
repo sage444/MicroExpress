@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "mustache",
+        "repositoryURL": "https://github.com/AlwaysRightInstitute/mustache.git",
+        "state": {
+          "branch": null,
+          "revision": "37278804d39799bab33835bd4d662e46b603a412",
+          "version": "0.5.4"
+        }
+      },
+      {
         "package": "swift-nio",
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
