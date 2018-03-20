@@ -9,6 +9,8 @@ let loopGroup =
 
 open class Express : Router {
   
+  override public init() {}
+  
   open func listen(_ port: Int) {
     let reuseAddrOpt = ChannelOptions.socket(
       SocketOptionLevel(SOL_SOCKET),
