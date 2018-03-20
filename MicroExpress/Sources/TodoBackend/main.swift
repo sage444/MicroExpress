@@ -18,6 +18,10 @@ app.use { req, res, next in
   next() // continue processing
 }
 
+app.get("/todos") { _, res, _ in
+  res.render("Todolist", [ "title": "DoIt!", "todos": todos ])
+}
+
 app.get("/todomvc") { _, res, _ in
   // send JSON to the browser
   res.json(todos)
