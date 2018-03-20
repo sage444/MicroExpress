@@ -1,10 +1,12 @@
 // File: main.swift - Add to existing file
 let app = Express()
 
-fs.readFile("/etc/passwd") { err, data in
-  guard let data = data else { return print("Failed:", err as Any) }
-  print("Read passwd:", data)
-}
+#if false
+  fs.readFile("/etc/passwd") { err, data in
+    guard let data = data else { return print("Failed:", err as Any) }
+    print("Read passwd:", data)
+  }
+#endif
 
 // Reusable middleware up here
 app.use(querystring,
