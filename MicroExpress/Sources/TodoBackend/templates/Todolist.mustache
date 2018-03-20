@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+    <style>
+      h1, li { font-family: -apple-system, sans-serif; }
+      h1 {
+        color:           rgb(2, 123, 227);
+        border-bottom:   1px solid rgb(2, 123, 227);
+        padding-bottom:  0.1em;
+        text-align:      center;
+        font-size:       2em;
+      }
+      ul li   { padding: 0.5em; }
+      ul      { list-style-type: square; }
+      li.done {
+        text-decoration: line-through;
+        color:           gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <ul>
+      {{#todos}}
+        <li class="{{#completed}}done{{/}}">{{title}}</li>
+      {{/todos}}
+    </ul>
+  </body>
+</html>

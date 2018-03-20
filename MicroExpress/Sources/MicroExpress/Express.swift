@@ -4,10 +4,10 @@ import Foundation
 import NIO
 import NIOHTTP1
 
+let loopGroup =
+  MultiThreadedEventLoopGroup(numThreads: System.coreCount)
+
 open class Express : Router {
-  
-  let loopGroup =
-    MultiThreadedEventLoopGroup(numThreads: System.coreCount)
   
   open func listen(_ port: Int) {
     let reuseAddrOpt = ChannelOptions.socket(
@@ -18,7 +18,7 @@ open class Express : Router {
       .serverChannelOption(reuseAddrOpt, value: 1)
       
       .childChannelInitializer { channel in
-        channel.pipeline.addHTTPServerHandlers().then {
+        channel.pipeline.configureHTTPServerPipeline().then {
           channel.pipeline.add(handler:
             HTTPHandler(router: self))
         }
