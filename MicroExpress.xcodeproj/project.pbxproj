@@ -32,6 +32,7 @@
 		E893D8932055A6AF00C6D26F /* TodoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoModel.swift; sourceTree = "<group>"; };
 		E893D8952055AB6A00C6D26F /* CORS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CORS.swift; path = Sources/MicroExpress/CORS.swift; sourceTree = "<group>"; };
 		E8DD40BB20617CBD00144BD4 /* FS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FS.swift; path = Sources/MicroExpress/FS.swift; sourceTree = "<group>"; };
+		E8DD40BE206183B100144BD4 /* Todolist.mustache */ = {isa = PBXFileReference; lastKnownFileType = text; path = Todolist.mustache; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,11 +82,20 @@
 		E893D88E20559A4400C6D26F /* TodoBackend */ = {
 			isa = PBXGroup;
 			children = (
+				E8DD40BD2061839500144BD4 /* templates */,
 				E893D88F20559A4400C6D26F /* main.swift */,
 				E893D8932055A6AF00C6D26F /* TodoModel.swift */,
 			);
 			name = TodoBackend;
 			path = MicroExpress/Sources/TodoBackend;
+			sourceTree = "<group>";
+		};
+		E8DD40BD2061839500144BD4 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				E8DD40BE206183B100144BD4 /* Todolist.mustache */,
+			);
+			path = templates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
