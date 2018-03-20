@@ -4,12 +4,10 @@ import Foundation
 import NIO
 import NIOHTTP1
 
+let loopGroup =
+  MultiThreadedEventLoopGroup(numThreads: System.coreCount)
+
 open class Express : Router {
-  
-  override public init() {}
-  
-  let loopGroup =
-    MultiThreadedEventLoopGroup(numThreads: System.coreCount)
   
   open func listen(_ port: Int) {
     let reuseAddrOpt = ChannelOptions.socket(
