@@ -151,7 +151,7 @@ public extension ServerResponse {
                     in pathContext: String) -> String?
   {
     #if os(iOS) && !arch(x86_64) // iOS support, FIXME: blocking ...
-      return Bundle.main.path(forResource: template, ofType: "mustache")
+      return Bundle.main.path(forResource: resource, ofType: "mustache")
     #else
       var url = URL(fileURLWithPath: pathContext)
       url.deleteLastPathComponent()
