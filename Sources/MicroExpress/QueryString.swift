@@ -20,9 +20,12 @@ func querystring(req  : IncomingMessage,
   // parameters
   if let queryItems = URLComponents(string: req.header.uri)?.queryItems {
     req.userInfo[paramDictKey] =
-      Dictionary(grouping: queryItems, by: { $0.name })
-        .mapValues { $0.flatMap({ $0.value })
-	               .joined(separator: ",") }
+      Dictionary<String, [URLQueryItem]>(grouping: queryItems, by: { $0.name })
+        .mapValues {
+          $0.compactMap({ $0.value }).joined(separator: ",")
+          // #if swift(>=4.1) doesn't fly here, confuses type detector ...
+          // return $0.flatMap({ $0.value }).joined(separator: ",")
+        }
   }
   
   // pass on control to next middleware
