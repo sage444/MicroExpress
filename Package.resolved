@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/AlwaysRightInstitute/mustache.git",
         "state": {
           "branch": null,
-          "revision": "37278804d39799bab33835bd4d662e46b603a412",
-          "version": "0.5.4"
+          "revision": "e1439b7c9f450b3a13cb97d9c1fb58f73ad28c0b",
+          "version": "0.5.5"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "241aed70c8fcaa26f2b1c86300e05ca102faf594",
-          "version": "1.4.1"
+          "revision": "cf08e673dc41dc63d34065234c8fc432e8d334c4",
+          "version": "1.9.2"
         }
       },
       {

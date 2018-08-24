@@ -18,11 +18,16 @@ func querystring(req  : IncomingMessage,
 {
   // use Foundation to parse the `?a=x`
   // parameters
-  if let queryItems = URLComponents(string: req.header.uri)?.queryItems {
-    req.userInfo[paramDictKey] =
-      Dictionary(grouping: queryItems, by: { $0.name })
-        .mapValues { $0.flatMap({ $0.value })
-	               .joined(separator: ",") }
+  if let qi = URLComponents(string: req.header.uri)?.queryItems {
+    #if swift(>=4.1)
+      req.userInfo[paramDictKey] =
+        Dictionary<String, [URLQueryItem]>(grouping: qi, by: { $0.name })
+          .mapValues { $0.compactMap({ $0.value }).joined(separator: ",") }
+    #else
+      req.userInfo[paramDictKey] =
+        Dictionary<String, [URLQueryItem]>(grouping: qi, by: { $0.name })
+          .mapValues { $0.flatMap({ $0.value }).joined(separator: ",") }
+    #endif
   }
   
   // pass on control to next middleware
