@@ -14,7 +14,7 @@ open class ServerResponse {
   public init(channel: Channel) {
     self.channel = channel
   }
-  
+
   /// An Express like `send()` function.
   open func send(_ s: String) {
     flushHeader()
@@ -75,7 +75,32 @@ public extension ServerResponse {
   }
 }
 
+public extension ServerResponse {
+
+  /// An Express like `send()` function which arbitrary "Data" objects
+  /// (i.e. collections of type UInt8)
+  public func send<S: ContiguousCollection>(bytes: S)
+                where S.Element == UInt8
+  {
+    flushHeader()
+    
+    var buffer = channel.allocator.buffer(capacity: bytes.count)
+    buffer.write(bytes: bytes)
+    
+    let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
+    
+    _ = channel.writeAndFlush(part)
+               .mapIfError(handleError)
+               .map { self.end() }
+  }
+
+}
+
+
 import Foundation
+
+
+// MARK: - JSON
 
 public extension ServerResponse {
   
@@ -106,6 +131,9 @@ public extension ServerResponse {
                .map { self.end() }
   }
 }
+
+
+// MARK: - Mustache
 
 import mustache
 
