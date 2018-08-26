@@ -75,6 +75,8 @@ public extension ServerResponse {
   }
 }
 
+#if swift(>=4.1) // Needs a different imp for 4.0
+
 public extension ServerResponse {
 
   /// An Express like `send()` function which arbitrary "Data" objects
@@ -95,6 +97,8 @@ public extension ServerResponse {
   }
 
 }
+
+#endif
 
 
 import Foundation
