@@ -73,8 +73,8 @@ import PackageDescription
 let package = Package(
   name: "MicroHelloWorld",
   dependencies: [
-    .package(url: "https://github.com/AlwaysRightInstitute/MicroExpress.git", 
-             .branch("branches/swift-nio-lib"))
+    .package(url: "https://github.com/NozeIO/MicroExpress.git", 
+             from: "0.4.4")
   ],
   targets: [
     .target(name: "MicroHelloWorld",
