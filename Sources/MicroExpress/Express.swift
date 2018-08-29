@@ -11,12 +11,14 @@ open class Express : Router {
   
   override public init() {}
   
-  open func listen(_ port: Int) {
-    let reuseAddrOpt = ChannelOptions.socket(
-      SocketOptionLevel(SOL_SOCKET),
-      SO_REUSEADDR)
+  open func listen(_ port    : Int    = 1337,
+                   _ host    : String = "localhost",
+                   _ backlog : Int    = 256)
+  {
+    let reuseAddrOpt = ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET),
+                                             SO_REUSEADDR)
     let bootstrap = ServerBootstrap(group: loopGroup)
-      .serverChannelOption(ChannelOptions.backlog, value: 256)
+      .serverChannelOption(ChannelOptions.backlog, value: Int32(backlog))
       .serverChannelOption(reuseAddrOpt, value: 1)
       
       .childChannelInitializer { channel in
@@ -34,7 +36,7 @@ open class Express : Router {
     
     do {
       let serverChannel =
-        try bootstrap.bind(host: "localhost", port: port)
+        try bootstrap.bind(host: host, port: port)
           .wait()
       print("Server running on:", serverChannel.localAddress!)
       
