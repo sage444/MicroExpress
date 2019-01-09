@@ -10,11 +10,8 @@ let loopGroup =
 open class Express : Router {
   
   override public init() {}
-  
-  open func listen(_ port    : Int    = 1337,
-                   _ host    : String = "localhost",
-                   _ backlog : Int    = 256)
-  {
+
+  private func createServerBootstrap(_ backlog : Int) -> ServerBootstrap {
     let reuseAddrOpt = ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET),
                                              SO_REUSEADDR)
     let bootstrap = ServerBootstrap(group: loopGroup)
@@ -33,6 +30,32 @@ open class Express : Router {
       .childChannelOption(reuseAddrOpt, value: 1)
       .childChannelOption(ChannelOptions.maxMessagesPerRead,
                           value: 1)
+    return bootstrap
+  }
+
+  open func listen(unixSocket : String = "express.socket",
+                   backlog    : Int    = 256)
+  {
+    let bootstrap = self.createServerBootstrap(backlog)
+
+    do {
+      let serverChannel =
+        try bootstrap.bind(unixDomainSocketPath: unixSocket)
+          .wait()
+      print("Server running on:", socket)
+      
+      try serverChannel.closeFuture.wait() // runs forever
+    }
+    catch {
+      fatalError("failed to start server: \(error)")
+    }
+  }
+  
+  open func listen(_ port    : Int    = 1337,
+                   _ host    : String = "localhost",
+                   _ backlog : Int    = 256)
+  {
+    let bootstrap = self.createServerBootstrap(backlog)
     
     do {
       let serverChannel =
