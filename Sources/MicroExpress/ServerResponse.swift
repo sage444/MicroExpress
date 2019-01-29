@@ -76,7 +76,29 @@ public extension ServerResponse {
   }
 }
 
-#if swift(>=4.1) // Needs a different imp for 4.0
+#if swift(>=5)
+
+public extension ServerResponse {
+
+  /// An Express like `send()` function which arbitrary "Data" objects
+  /// (i.e. collections of type UInt8)
+  func send<S: Collection>(bytes: S) where S.Element == UInt8 {
+    flushHeader()
+    guard !didEnd else { return }
+
+    var buffer = channel.allocator.buffer(capacity: bytes.count)
+    buffer.write(bytes: bytes)
+    
+    let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
+    
+    _ = channel.writeAndFlush(part)
+               .mapIfError(handleError)
+               .map { self.end() }
+  }
+
+}
+
+#elseif swift(>=4.1) // Needs a different imp for 4.0
 
 public extension ServerResponse {
 
