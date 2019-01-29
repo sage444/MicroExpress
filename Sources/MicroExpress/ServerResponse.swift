@@ -60,7 +60,7 @@ public extension ServerResponse {
   
   /// A more convenient header accessor. Not correct for
   /// any header.
-  public subscript(name: String) -> String? {
+  subscript(name: String) -> String? {
     set {
       assert(!didWriteHeader, "header is out!")
       if let v = newValue {
@@ -82,9 +82,7 @@ public extension ServerResponse {
 
   /// An Express like `send()` function which arbitrary "Data" objects
   /// (i.e. collections of type UInt8)
-  public func send<S: ContiguousCollection>(bytes: S)
-                where S.Element == UInt8
-  {
+  func send<S: ContiguousCollection>(bytes: S) where S.Element == UInt8 {
     flushHeader()
     guard !didEnd else { return }
 
@@ -146,8 +144,8 @@ import mustache
 
 public extension ServerResponse {
   
-  public func render(pathContext : String = #file,
-                     _ template: String, _ options : Any? = nil)
+  func render(pathContext : String = #file,
+              _ template: String, _ options : Any? = nil)
   {
     let res = self
     
