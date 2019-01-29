@@ -18,6 +18,7 @@ open class ServerResponse {
   /// An Express like `send()` function.
   open func send(_ s: String) {
     flushHeader()
+    guard !didEnd else { return }
     
     let utf8   = s.utf8
     var buffer = channel.allocator.buffer(capacity: utf8.count)
@@ -85,7 +86,8 @@ public extension ServerResponse {
                 where S.Element == UInt8
   {
     flushHeader()
-    
+    guard !didEnd else { return }
+
     var buffer = channel.allocator.buffer(capacity: bytes.count)
     buffer.write(bytes: bytes)
     
@@ -125,7 +127,8 @@ public extension ServerResponse {
     
     // send the headers and the data
     flushHeader()
-    
+    guard !didEnd else { return }
+
     var buffer = channel.allocator.buffer(capacity: data.count)
     buffer.write(bytes: data)
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
