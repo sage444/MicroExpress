@@ -4,7 +4,7 @@
 //  MicroExpress
 //
 //  Created by Helge Hess on 09.03.18.
-//  Copyright © 2018 ZeeZide. All rights reserved.
+//  Copyright © 2018-2019 ZeeZide. All rights reserved.
 //
 import PackageDescription
 
@@ -12,7 +12,7 @@ let package = Package(
     name: "MicroExpress",
     
     products: [
-      .library(name: "MicroExpress", targets: ["MicroExpress"]),
+        .library(name: "MicroExpress", targets: ["MicroExpress"]),
     ],
     
     dependencies: [
@@ -21,19 +21,19 @@ let package = Package(
                  from: "1.0.0"),
         */
         .package(url: "https://github.com/apple/swift-nio.git", 
-                 from: "1.9.2"),
+                 from: "1.12.1"),
         .package(url: "https://github.com/AlwaysRightInstitute/mustache.git",
-                 from: "0.5.5")
+                 from: "0.5.6")
     ],
 
     targets: [
         .target(name: "MicroExpress", 
                 dependencies: [
-                  /* Add your target dependencies in here, e.g.: */
-                  // "cows",
-                  "NIO",
-                  "NIOHTTP1",
-                  "mustache"
+                    /* Add your target dependencies in here, e.g.: */
+                    // "cows",
+                    "NIO",
+                    "NIOHTTP1",
+                    "mustache"
                 ])
     ]
 )
