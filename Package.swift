@@ -23,7 +23,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-nio.git", 
                  from: "1.12.1"),
         .package(url: "https://github.com/AlwaysRightInstitute/mustache.git",
-                 from: "0.5.6")
+                 from: "0.5.7")
     ],
 
     targets: [
