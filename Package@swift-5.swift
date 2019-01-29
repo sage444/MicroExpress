@@ -33,6 +33,7 @@ let package = Package(
                     // "cows",
                     "NIO",
                     "NIOHTTP1",
+                    "_NIO1APIShims",
                     "mustache"
                 ])
     ]

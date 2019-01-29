@@ -26,9 +26,15 @@ open class ServerResponse {
     
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
     
-    _ = channel.writeAndFlush(part)
-               .mapIfError(handleError)
-               .map { self.end() }
+    #if swift(>=5)
+      _ = channel.writeAndFlush(part)
+                 .recover(handleError)
+                 .map { self.end() }
+    #else
+      _ = channel.writeAndFlush(part)
+                 .mapIfError(handleError)
+                 .map { self.end() }
+    #endif
   }
   
   /// Check whether we already wrote the response header.
@@ -40,7 +46,11 @@ open class ServerResponse {
     let head = HTTPResponseHead(version: .init(major:1, minor:1),
                                 status: status, headers: headers)
     let part = HTTPServerResponsePart.head(head)
-    _ = channel.writeAndFlush(part).mapIfError(handleError)
+    #if swift(>=5)
+      _ = channel.writeAndFlush(part).recover(handleError)
+    #else
+      _ = channel.writeAndFlush(part).mapIfError(handleError)
+    #endif
   }
   
   func handleError(_ error: Error) {
@@ -91,9 +101,15 @@ public extension ServerResponse {
     
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
     
-    _ = channel.writeAndFlush(part)
-               .mapIfError(handleError)
-               .map { self.end() }
+    #if swift(>=5)
+      _ = channel.writeAndFlush(part)
+                 .recover(handleError)
+                 .map { self.end() }
+    #else
+      _ = channel.writeAndFlush(part)
+                 .mapIfError(handleError)
+                 .map { self.end() }
+    #endif
   }
 
 }
@@ -153,9 +169,15 @@ public extension ServerResponse {
     buffer.write(bytes: data)
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
 
-    _ = channel.writeAndFlush(part)
-               .mapIfError(handleError)
-               .map { self.end() }
+    #if swift(>=5)
+      _ = channel.writeAndFlush(part)
+                 .recover(handleError)
+                 .map { self.end() }
+    #else
+      _ = channel.writeAndFlush(part)
+                 .mapIfError(handleError)
+                 .map { self.end() }
+    #endif
   }
 }
 
