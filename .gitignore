@@ -7,4 +7,5 @@ xcuserdata
 *.xcuserdata
 *.build
 *.xcodeproj
+Package.resolved
 
