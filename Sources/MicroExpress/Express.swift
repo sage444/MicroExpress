@@ -19,10 +19,17 @@ open class Express : Router {
       .serverChannelOption(reuseAddrOpt, value: 1)
       
       .childChannelInitializer { channel in
-        channel.pipeline.configureHTTPServerPipeline().then {
-          channel.pipeline.add(handler:
-            HTTPHandler(router: self))
-        }
+        #if swift(>=5)
+          return channel.pipeline.configureHTTPServerPipeline().flatMap {
+            channel.pipeline.add(handler:
+              HTTPHandler(router: self))
+          }
+        #else
+          return channel.pipeline.configureHTTPServerPipeline().then {
+            channel.pipeline.add(handler:
+              HTTPHandler(router: self))
+          }
+        #endif
       }
       
       .childChannelOption(ChannelOptions.socket(
