@@ -3,7 +3,6 @@
 import Foundation
 import NIO
 import NIOHTTP1
-import _NIO1APIShims
 
 let loopGroup =
   MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
