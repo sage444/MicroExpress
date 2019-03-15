@@ -104,6 +104,11 @@ open class Express : Router {
         case .body, .end: break
       }
     }
+    
+    public func errorCaught(ctx: ChannelHandlerContext, error: Error) {
+      print("socket error, closing connection:", error)
+      ctx.close(promise: nil)
+    }
   }
 }
 
