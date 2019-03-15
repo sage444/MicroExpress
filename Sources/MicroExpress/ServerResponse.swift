@@ -22,7 +22,11 @@ open class ServerResponse {
     
     let utf8   = s.utf8
     var buffer = channel.allocator.buffer(capacity: utf8.count)
-    buffer.write(bytes: utf8)
+    #if swift(>=5) // NIO2
+      buffer.writeBytes(utf8)
+    #else
+      buffer.write(bytes: utf8)
+    #endif
     
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
     
@@ -97,7 +101,11 @@ public extension ServerResponse {
     guard !didEnd else { return }
 
     var buffer = channel.allocator.buffer(capacity: bytes.count)
-    buffer.write(bytes: bytes)
+    #if swift(>=5) // NIO2
+      buffer.writeBytes(bytes)
+    #else
+      buffer.write(bytes: bytes)
+    #endif
     
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
     
@@ -166,7 +174,11 @@ public extension ServerResponse {
     guard !didEnd else { return }
 
     var buffer = channel.allocator.buffer(capacity: data.count)
-    buffer.write(bytes: data)
+    #if swift(>=5) // NIO2
+      buffer.writeBytes(data)
+    #else
+      buffer.write(bytes: data)
+    #endif
     let part = HTTPServerResponsePart.body(.byteBuffer(buffer))
 
     #if swift(>=5)
@@ -205,7 +217,11 @@ public extension ServerResponse {
         return res.send("Error: \(err as Optional)")
       }
       
-      data.write(bytes: [0]) // cstr terminator
+      #if swift(>=5) // NIO2
+        data.writeBytes([0]) // cstr terminator
+      #else
+        data.write(bytes: [0]) // cstr terminator
+      #endif
       
       // Parse the template
       let parser = MustacheParser()

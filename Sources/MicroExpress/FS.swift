@@ -3,18 +3,26 @@
 //  MicroExpress
 //
 //  Created by Helge Hess on 20.03.18.
-//  Copyright © 2018 ZeeZide GmbH. All rights reserved.
+//  Copyright © 2018-2019 ZeeZide GmbH. All rights reserved.
 //
 
 import NIO
 
 public enum fs {
   
-  static let threadPool : BlockingIOThreadPool = {
-    let tp = BlockingIOThreadPool(numberOfThreads: 4)
-    tp.start()
-    return tp
-  }()
+  #if swift(>=5)
+    static let threadPool : NIOThreadPool = {
+      let tp = NIOThreadPool(numberOfThreads: 4)
+      tp.start()
+      return tp
+    }()
+  #else
+    static let threadPool : BlockingIOThreadPool = {
+      let tp = BlockingIOThreadPool(numberOfThreads: 4)
+      tp.start()
+      return tp
+    }()
+  #endif
 
   static let fileIO = NonBlockingFileIO(threadPool: threadPool)
 
@@ -36,11 +44,19 @@ public enum fs {
     threadPool.submit {
       assert($0 == .active, "unexpected cancellation")
       
-      let fh : NIO.FileHandle
-      do { // Blocking:
-        fh = try NIO.FileHandle(path: path)
-      }
-      catch { return emit(error: error) }
+      #if swift(>=5)
+        let fh : NIO.NIOFileHandle
+        do { // Blocking:
+          fh = try NIO.NIOFileHandle(path: path)
+        }
+        catch { return emit(error: error) }
+      #else
+        let fh : NIO.FileHandle
+        do { // Blocking:
+          fh = try NIO.FileHandle(path: path)
+        }
+        catch { return emit(error: error) }
+      #endif
       
       fileIO.read(fileHandle : fh, byteCount: maxSize,
                   allocator  : ByteBufferAllocator(),
