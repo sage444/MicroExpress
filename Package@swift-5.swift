@@ -21,7 +21,7 @@ let package = Package(
                  from: "1.0.0"),
         */
         .package(url: "https://github.com/apple/swift-nio.git", 
-                 .branch("master")),
+                 from: "2.0.0"),
         .package(url: "https://github.com/AlwaysRightInstitute/mustache.git",
                  from: "0.5.6")
     ],
