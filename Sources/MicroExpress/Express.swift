@@ -91,7 +91,7 @@ open class Express : Router {
       switch reqPart {
         case .head(let header):
           let req = IncomingMessage(header: header)
-          let res = ServerResponse(channel: ctx.channel)
+          let res = ServerResponse(channel: context.channel)
           
           // trigger Router
           router.handle(request: req, response: res) {
@@ -108,7 +108,7 @@ open class Express : Router {
     #if swift(>=5) // NIO 2 API
       public func errorCaught(context: ChannelHandlerContext, error: Error) {
         print("socket error, closing connection:", error)
-        ctx.close(promise: nil)
+        context.close(promise: nil)
       }
     #else // NIO 1 API
       func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
