@@ -105,18 +105,18 @@ open class Express : Router {
       }
     }
     
-    #if swift(>=5) // NIO 2 API
-      public func errorCaught(context: ChannelHandlerContext, error: Error) {
-        print("socket error, closing connection:", error)
-        context.close(promise: nil)
-      }
-    #else // NIO 1 API
-      func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+    func errorCaught(context: ChannelHandlerContext, error: Error) {
+      print("socket error, closing connection:", error)
+      context.close(promise: nil)
+    }
+    
+    #if swift(>=5)
+    #else // NIO 1 API shim
+      func channelRead(ctx context: ChannelHandlerContext, data: NIOAny) {
         return channelRead(context: context, data: data)
       }
-      public func errorCaught(ctx: ChannelHandlerContext, error: Error) {
-        print("socket error, closing connection:", error)
-        ctx.close(promise: nil)
+      func errorCaught(ctx context: ChannelHandlerContext, error: Error) {
+        errorCaught(context: context, error: error)
       }
     #endif // NIO 1 API
   }
