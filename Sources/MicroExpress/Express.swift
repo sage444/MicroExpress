@@ -85,7 +85,7 @@ open class Express : Router {
       self.router = router
     }
 
-    func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
       let reqPart = self.unwrapInboundIn(data)
       
       switch reqPart {
@@ -105,10 +105,20 @@ open class Express : Router {
       }
     }
     
-    public func errorCaught(ctx: ChannelHandlerContext, error: Error) {
-      print("socket error, closing connection:", error)
-      ctx.close(promise: nil)
-    }
+    #if swift(>=5) // NIO 2 API
+      public func errorCaught(context: ChannelHandlerContext, error: Error) {
+        print("socket error, closing connection:", error)
+        ctx.close(promise: nil)
+      }
+    #else // NIO 1 API
+      func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+        return channelRead(context: context, data: data)
+      }
+      public func errorCaught(ctx: ChannelHandlerContext, error: Error) {
+        print("socket error, closing connection:", error)
+        ctx.close(promise: nil)
+      }
+    #endif // NIO 1 API
   }
 }
 
