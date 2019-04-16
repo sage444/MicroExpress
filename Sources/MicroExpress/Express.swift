@@ -80,29 +80,44 @@ open class Express : Router {
     typealias InboundIn = HTTPServerRequestPart
     
     let router : Router
+    var headers: HTTPRequestHead?
+    var body: ByteBuffer?
     
     init(router: Router) {
       self.router = router
     }
 
     func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-      let reqPart = self.unwrapInboundIn(data)
-      
-      switch reqPart {
+        let reqPart = self.unwrapInboundIn(data)
+        
+        switch reqPart {
         case .head(let header):
-          let req = IncomingMessage(header: header)
-          let res = ServerResponse(channel: context.channel)
-          
-          // trigger Router
-          router.handle(request: req, response: res) {
-            (items : Any...) in // the final handler
-            res.status = .notFound
-            res.send("No middleware handled the request!")
-          }
-
-        // ignore incoming content to keep it micro :-)
-        case .body, .end: break
-      }
+            headers = header
+            print("request headers receiced: \(header)")
+        case .body(let body):
+            if var existingData = self.body {
+                let newBytes = body.getBytes(at: 0, length: body.readableBytes) ?? []
+                existingData.reserveCapacity(existingData.capacity + newBytes.count)
+                let bytesWrote = existingData.write(bytes: newBytes)
+                assert(body.readableBytes == bytesWrote)
+                self.body = existingData
+            } else {
+                self.body = body
+            }
+           
+            print("request body receiced of size: \(body.capacity)")
+        case .end:
+            let headers = self.headers ?? HTTPRequestHead(version: .init(major: 1, minor: 1), method: .GET, uri: "")
+            let req = IncomingMessage(header: headers, body: body)
+            let res = ServerResponse(channel: context.channel)
+            
+            // trigger Router
+            router.handle(request: req, response: res) {
+                (items : Any...) in // the final handler
+                res.status = .notFound
+                res.send("No middleware handled the request!")
+            }
+        }
     }
     
     func errorCaught(context: ChannelHandlerContext, error: Error) {

@@ -68,6 +68,11 @@ open class ServerResponse {
     _ = channel.writeAndFlush(HTTPServerResponsePart.end(nil))
                .map { self.channel.close() }
   }
+    
+  open func close() {
+    flushHeader()
+    end()
+  }
 }
 
 public extension ServerResponse {
