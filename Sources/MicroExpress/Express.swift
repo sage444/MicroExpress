@@ -96,9 +96,8 @@ open class Express : Router {
             print("request headers receiced: \(header)")
         case .body(let body):
             if var existingData = self.body {
-                let newBytes = body.getBytes(at: 0, length: body.readableBytes) ?? []
-                existingData.reserveCapacity(existingData.capacity + newBytes.count)
-                let bytesWrote = existingData.write(bytes: newBytes)
+                var incoming = body
+                let bytesWrote = existingData.writeBuffer(&incoming)
                 assert(body.readableBytes == bytesWrote)
                 self.body = existingData
             } else {
