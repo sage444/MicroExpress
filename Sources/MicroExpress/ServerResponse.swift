@@ -198,7 +198,7 @@ public extension ServerResponse {
   }
 }
 
-
+/*
 // MARK: - Mustache
 
 import mustache
@@ -260,3 +260,5 @@ public extension ServerResponse {
     #endif
   }
 }
+
+ */
