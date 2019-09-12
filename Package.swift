@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 //
 //  Package.swift
 //  MicroExpress
@@ -21,7 +21,7 @@ let package = Package(
                  from: "1.0.0"),
         */
         .package(url: "https://github.com/apple/swift-nio.git", 
-                 .upToNextMajor(from: "1.13.2")),
+                 .upToNextMajor(from: "2.0.0")),
         /*
         .package(url: "https://github.com/AlwaysRightInstitute/mustache.git",
                  from: "0.5.7")

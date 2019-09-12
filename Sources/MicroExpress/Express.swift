@@ -97,7 +97,7 @@ open class Express : Router {
         case .body(let body):
             if var existingData = self.body {
                 var incoming = body
-                let bytesWrote = existingData.write(buffer: &incoming)
+                let bytesWrote = existingData.writeBuffer(&incoming)
                 assert(body.readableBytes == bytesWrote)
                 self.body = existingData
             } else {
